@@ -18,11 +18,11 @@ PHONE = 0
 user_data =[]
 users = {}
 
-def update_table(busines_title, phone_number):
+def update_table(busines_title, phone_number,usr_name):
 	try:
 		gc = gspread.authorize(credentials)
 		sheet=gc.open('Павел Шуба бот').sheet1
-		sheet.append_row([busines_title,phone_number])
+		sheet.append_row([busines_title,phone_number,usr_name])
 	except:
 		os.startfile(sys.argv[0])
 		os.abort()
@@ -39,7 +39,7 @@ def phone(bot,update):
 	users[update.message.chat_id].append(text)
 
 	update.effective_message.reply_text('Спасибо что ответили на вопросы 😉\nОт меня подарок 50$ на любую услугу из любой из моих компаний.')
-	update_table(users[update.message.chat_id][0],users[update.message.chat_id][1])
+	update_table(users[update.message.chat_id][1],users[update.message.chat_id][2],users[update.message.chat_id][0])
 	time.sleep(1) 
 	bot.sendPhoto(chat_id=update.message.chat_id, photo=open('1.jpg', 'rb'))
 	time.sleep(1) 
@@ -55,6 +55,7 @@ def phone(bot,update):
 
 def start(bot, update):
 	users[update.message.chat_id] = []
+	users[update.message.chat_id].append(update.message.chat.first_name)
 	update.effective_message.reply_text('Чем занимаетесь? Какой у вас бизнес?')
 	return BUSINES
 
@@ -72,7 +73,7 @@ def main():
 	u = Updater(TOKEN)
 	dp = u.dispatcher
 	dp.add_handler(ch)
-	
+
 	u.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
 	u.bot.set_webhook("https://pavel-bot-1.herokuapp.com/" + TOKEN)
 	u.idle()
