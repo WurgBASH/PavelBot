@@ -30,7 +30,7 @@ def update_table(busines_title, phone_number,usr_name):
 def busines(bot,update):
 	text = update.message.text
 	users[update.message.chat_id].append(text)
-	update.effective_message.reply_text('Куда я могу вам отправить подарок на 50$ (напиши свой номер телефона)?')
+	update.effective_message.reply_text('Куда я могу вам отправить подарок на 50$ (напишите свой номер телефона)?')
 
 	return PHONE
 
